@@ -8,16 +8,13 @@ namespace SSAU.vls.FIRST.lr.ExportToExcel.Models
 {
     public class ComModel
     {
-        public string[,] ExportData{ get; set; }
-
         /// <summary>
         ///  Тип л.р.
         /// </summary>
         public string Com_1 { get; set; }
 
         /// <summary>
-        /// Отказы, т.е. число, которое характеризует тип отказа, например: 15 - тип 1; 17 - тип 2, 30 - тип 3; 50 - тип 4; 80 - тип 5;
-        /// 94 - тип 1 + тип 2; 106 - тип 3 + тип 4; 130 - тип 2 + тип 3; 150 - тип 2 + тип 5 + тип 5; 200 - тип 10; 300 - отказа нет.
+        /// Отказы, т.е. число, которое характеризует тип отказа
         /// </summary>
         public int Com_2 { get; set; }
 
@@ -50,5 +47,7 @@ namespace SSAU.vls.FIRST.lr.ExportToExcel.Models
         /// Уровень E от 0 до 1000
         /// </summary>
         public double Com_8 { get; set; }
+
+        public static List<ComModel> ExportList = new List<ComModel>();
     }
 }

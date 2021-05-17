@@ -75,7 +75,7 @@
             </TextBox.Style>
         </TextBox>
 
-        <Button Grid.Row="4" Content="Продолжить" FontFamily="/SSAU.vls;component/Font.SSAU/#Elektra Text" Margin="100,5,100.8,-4.8" Click="Button_Click">
+        <Button Grid.Row="4" Content="Завершить" FontFamily="/SSAU.vls;component/Font.SSAU/#Elektra Text" Margin="100,5,100.8,-4.8" Click="Button_Click">
 
         </Button>
 

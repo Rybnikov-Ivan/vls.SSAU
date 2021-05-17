@@ -130,6 +130,8 @@
     </Compile>
     <Compile Include="FIRST.lr\Calculation\Calculation.cs" />
     <Compile Include="FIRST.lr\Calculation\Models\CalculationModel.cs" />
+    <Compile Include="FIRST.lr\Calculation\Models\FailureModel.cs" />
+    <Compile Include="FIRST.lr\Calculation\Models\TypeModel.cs" />
     <Compile Include="FIRST.lr\ExportToExcel\ExportExcel.cs" />
     <Compile Include="FIRST.lr\ExportToExcel\Models\ComModel.cs" />
     <Compile Include="FIRST.lr\ExportToExcel\Models\WorkBookExcelItem.cs" />

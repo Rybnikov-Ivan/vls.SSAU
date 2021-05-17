@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using ClosedXML.Excel;
@@ -13,19 +14,17 @@ namespace SSAU.vls.FIRST.lr.ExportToExcel
 {
     public class ExportExcel
     {
-        ModelLoginForm modelLoginForm = new ModelLoginForm();
-        ComModel comModel = new ComModel();
-        string[,] resultArray = new string[1000, 8];
-        public void SaveEndOfBase()
+        public void SaveEndOfBase(List<ComModel> comModels, string name, string group)
         {
-
+            int j = 0;
+            ComModel [] arr = comModels.ToArray();
             // Загрузить Excel, затем создать новую пустую рабочую книгу
-            Excel.Application excelApp = new Excel.Application();
+            Application excelApp = new Application();
 
             // Сделать приложение Excel видимым
             excelApp.Visible = true;
             excelApp.Workbooks.Add();
-            Excel._Worksheet workSheet = excelApp.ActiveSheet;
+            _Worksheet workSheet = excelApp.ActiveSheet;
             // Установить заголовки столбцов в ячейках 
             workSheet.Cells[1, 1] = "com_1";
             workSheet.Cells[1, 2] = "com_2";
@@ -35,41 +34,21 @@ namespace SSAU.vls.FIRST.lr.ExportToExcel
             workSheet.Cells[1, 6] = "com_6";
             workSheet.Cells[1, 7] = "com_7";
             workSheet.Cells[1, 8] = "com_8";
-            
 
+            for (int i = 2; i < comModels.Count; i++)
+            {
+                workSheet.Cells[i, 1] = arr[j].Com_1;
+                workSheet.Cells[i, 2] = arr[j].Com_2.ToString();
+                workSheet.Cells[i, 3] = arr[j].Com_3.ToString();
+                workSheet.Cells[i, 4] = arr[j].Com_4.ToString();
+                workSheet.Cells[i, 5] = arr[j].Com_5.ToString();
+                workSheet.Cells[i, 6] = arr[j].Com_6.ToString();
+                workSheet.Cells[i, 7] = arr[j].Com_7.ToString();
+                workSheet.Cells[i, 8] = arr[j].Com_8.ToString();
+                j++;
+            }
             excelApp.DisplayAlerts = false;
-            workSheet.SaveAs(string.Format(@"{0}\lab1" + modelLoginForm.Name + modelLoginForm.Group + ".xlsx", Environment.CurrentDirectory));
-
-            excelApp.Quit();
-        }
-
-        public void DataToExport(CalculationModel model, int count)
-        {
-            comModel.Com_1 = "1 Лр";
-            comModel.Com_2 = 10;
-            comModel.Com_3 = model.Power;
-            comModel.Com_4 = model.K4;
-            comModel.Com_5 = model.K5;
-            comModel.Com_6 = model.K6;
-            comModel.Com_7 = model.K7;
-            comModel.Com_8 = model.K8;
-
-            Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWb = xlApp.Workbooks.Open(string.Format(@"{0}\lab1" + modelLoginForm.Name + modelLoginForm.Group + ".xlsx", Environment.CurrentDirectory)); //открываем Excel файл
-            Excel.Worksheet xlSht = xlWb.Sheets[1]; //первый лист в файле
-
-            xlSht.Cells[count, 1] = comModel.Com_1;
-            xlSht.Cells[count, 2] = comModel.Com_2.ToString();
-            xlSht.Cells[count, 3] = comModel.Com_3.ToString();
-            xlSht.Cells[count, 4] = comModel.Com_4.ToString();
-            xlSht.Cells[count, 5] = comModel.Com_5.ToString();
-            xlSht.Cells[count, 6] = comModel.Com_6.ToString();
-            xlSht.Cells[count, 7] = comModel.Com_7.ToString();
-            xlSht.Cells[count, 8] = comModel.Com_8.ToString();
-
-            xlWb.Close(true); //закрыть и сохранить книгу
-            xlApp.Quit();
-
+            workSheet.SaveAs(string.Format(@"{0}\" + $"{name}-" + $"{group}" + ".xlsx", Environment.CurrentDirectory));
         }
     }
 }

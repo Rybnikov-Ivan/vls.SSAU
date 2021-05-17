@@ -22,6 +22,7 @@ namespace SSAU.vls
             InitializeComponent();
         }
 
+        
         /// <summary>
         /// Кнопка, вызывающая окно потверждения для закрытия приложения
         /// </summary>
@@ -73,8 +74,6 @@ namespace SSAU.vls
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Window window = new FirstLrWindow();
-            var resultFile = new ExportExcel();
-            resultFile.SaveEndOfBase();
             window.Show();
             this.Close();
         }

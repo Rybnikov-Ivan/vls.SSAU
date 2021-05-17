@@ -8,7 +8,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using SSAU.vls.FIRST.lr.Calculation;
 using System.Threading.Tasks;
-using System.Threading;
+using SSAU.vls.FIRST.lr.ExportToExcel.Models;
+using System.Collections.Generic;
 
 namespace SSAU.vls.FIRST.lr
 {
@@ -38,18 +39,22 @@ namespace SSAU.vls.FIRST.lr
         /// </summary>
         public CalculationModel model;
 
+        public Random random;
+
+        public double result;
         /// <summary>
         /// Таймер
         /// </summary>
         private DispatcherTimer timer;
 
-        CancellationTokenSource tokenSource;
-
-
+        public double gradualFailure;
+        public double suddenFailure;
         public FirstLrWindow()
         {
             InitializeComponent();
             model = new CalculationModel();
+            random = new Random();
+
         }
 
         /// <summary>
@@ -105,7 +110,8 @@ namespace SSAU.vls.FIRST.lr
         /// <param name="e"></param>
         private void Sudden_Checked(object sender, RoutedEventArgs e)
         {
-
+            Gradual.IsChecked = false;
+            result = random.NextDouble() * suddenFailure;
         }
 
         /// <summary>
@@ -115,7 +121,8 @@ namespace SSAU.vls.FIRST.lr
         /// <param name="e"></param>
         private void Gradual_Checked(object sender, RoutedEventArgs e)
         {
-
+            Sudden.IsChecked = false;
+            result = random.NextDouble() * gradualFailure;
         }
 
         /// <summary>
@@ -138,8 +145,6 @@ namespace SSAU.vls.FIRST.lr
             timer = new DispatcherTimer();
             timer.Tick += new EventHandler(timerTick);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
-            tokenSource = new CancellationTokenSource();
-            CancellationToken cancelToken = tokenSource.Token;
             timer.Start();
         }
 
@@ -172,13 +177,12 @@ namespace SSAU.vls.FIRST.lr
                 
             } else
             {
-                tokenSource.Cancel();
                 timer.Stop();
             }
         }
 
         /// <summary>
-        /// Сбрасывание тайме
+        /// Сбрасывание таймера
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -205,7 +209,6 @@ namespace SSAU.vls.FIRST.lr
                 e.Handled = true;
             } else
             {
-                tokenSource.Cancel();
                 timer.Stop();
                 this._startValue = 0;
                 TimerOutput.Content = ToStringTimeFormat(_startValue);
@@ -219,8 +222,14 @@ namespace SSAU.vls.FIRST.lr
         /// <param name="e"></param>
         private void timerTick(object sender, EventArgs e)
         {
+            gradualFailure = (1 - Math.Exp(-model.Lambda * model.Time)) * model.Power;
+            suddenFailure = (1 - Math.Exp(-model.Lambda * model.Time)) * model.Power * Calculation.Calculation.k4 * Calculation.Calculation.k5 * Calculation.Calculation.k6 * Calculation.Calculation.k7 * Calculation.Calculation.k8;
             int TimeSliderValue = (int)TimeSlider.Value;
-            
+            if (CheckBox.IsChecked == true)
+            {
+                timer.Stop();
+            }
+            CheckBox.IsChecked = false;
             if (TimeSlider.Value == 0)
             {
                 TimerOutput.Content = ToStringTimeFormat(_startValue);
@@ -237,12 +246,14 @@ namespace SSAU.vls.FIRST.lr
                 TimerOutput.Content = ToStringTimeFormat(_startValue);
                 timer.Stop();
             }
-            Task.Run(() => Calculation.Calculation.CalculationSuddenFailure(model, count))
-                .ContinueWith(task =>
-                {
 
-                    count++;
-                }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+            var calculationFailure = Calculation.Calculation.CalculationSuddenFailure(model, count);
+            var calculationComModel = Calculation.Calculation.CalculationComModel(model);
+            var calculationTypes = Calculation.Calculation.CalculationTypes(calculationFailure);
+            var calculationData = Calculation.Calculation.CalculationFailure(calculationFailure, calculationTypes, calculationComModel, count);
+            CheckFailure(calculationTypes, calculationComModel);
+
+            ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = 0, Com_3 = model.Power, Com_4 = Math.Round(calculationComModel.Com_4, 3), Com_5 = Math.Round(calculationComModel.Com_5, 3), Com_6 = Math.Round(calculationComModel.Com_6, 3), Com_7 = Math.Round(calculationComModel.Com_7, 3), Com_8 = Math.Round(calculationComModel.Com_8, 3) });
         }
 
         /// <summary>
@@ -293,9 +304,11 @@ namespace SSAU.vls.FIRST.lr
             windowEnd.ShowDialog();
             if (windowEnd.con == true)
             {
+                var loginWindow = new LoginWindow(ComModel.ExportList);
+                loginWindow.ShowDialog();
+
                 Window window = new MainWindow();
                 window.Show();
-                tokenSource.Cancel();
                 this.Close();
                 e.Handled = true;
             }
@@ -331,5 +344,124 @@ namespace SSAU.vls.FIRST.lr
 
         }
         #endregion
+
+        /// <summary>
+        /// Кнопка при возникновении отказа
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox.IsChecked = false;
+        }
+
+        /// <summary>
+        /// Проверка на отказы
+        /// </summary>
+        public void CheckFailure(TypeModel type, ComModel com)
+        {
+            if (type.Type15 < suddenFailure || type.Type15 < gradualFailure)
+            {
+                CheckBox.IsChecked = true;
+                #region
+                Uri resourcePauseUri = new Uri("/Resources/Images/pause_active.png", UriKind.Relative);
+                Pause.Source = new BitmapImage(resourcePauseUri);
+
+                Uri resourceStartUri = new Uri("/Resources/Images/start.png", UriKind.Relative);
+                Start.Source = new BitmapImage(resourceStartUri);
+
+                Uri resourceStopUri = new Uri("/Resources/Images/stop.png", UriKind.Relative);
+                Stop.Source = new BitmapImage(resourceStopUri);
+                #endregion
+
+                var validFailure = 15;
+                ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+            }
+            else if (type.Type17 < suddenFailure || type.Type17 < gradualFailure)
+            {
+                CheckBox.IsChecked = true;
+                #region
+                Uri resourcePauseUri = new Uri("/Resources/Images/pause_active.png", UriKind.Relative);
+                Pause.Source = new BitmapImage(resourcePauseUri);
+
+                Uri resourceStartUri = new Uri("/Resources/Images/start.png", UriKind.Relative);
+                Start.Source = new BitmapImage(resourceStartUri);
+
+                Uri resourceStopUri = new Uri("/Resources/Images/stop.png", UriKind.Relative);
+                Stop.Source = new BitmapImage(resourceStopUri);
+                #endregion
+
+                var validFailure = 17;
+                ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+            }
+            else if (type.Type30 < suddenFailure || type.Type30 < gradualFailure)
+            {
+                CheckBox.IsChecked = true;
+                #region
+                Uri resourcePauseUri = new Uri("/Resources/Images/pause_active.png", UriKind.Relative);
+                Pause.Source = new BitmapImage(resourcePauseUri);
+
+                Uri resourceStartUri = new Uri("/Resources/Images/start.png", UriKind.Relative);
+                Start.Source = new BitmapImage(resourceStartUri);
+
+                Uri resourceStopUri = new Uri("/Resources/Images/stop.png", UriKind.Relative);
+                Stop.Source = new BitmapImage(resourceStopUri);
+                #endregion
+
+                var validFailure = 30;
+                ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+            }
+            else if (type.Type50 < suddenFailure || type.Type50 < gradualFailure)
+            {
+                CheckBox.IsChecked = true;
+                #region
+                Uri resourcePauseUri = new Uri("/Resources/Images/pause_active.png", UriKind.Relative);
+                Pause.Source = new BitmapImage(resourcePauseUri);
+
+                Uri resourceStartUri = new Uri("/Resources/Images/start.png", UriKind.Relative);
+                Start.Source = new BitmapImage(resourceStartUri);
+
+                Uri resourceStopUri = new Uri("/Resources/Images/stop.png", UriKind.Relative);
+                Stop.Source = new BitmapImage(resourceStopUri);
+                #endregion
+
+                var validFailure = 50;
+                ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+            }
+            else if (type.Type80 < suddenFailure || type.Type80 < gradualFailure)
+            {
+                CheckBox.IsChecked = true;
+                #region
+                Uri resourcePauseUri = new Uri("/Resources/Images/pause_active.png", UriKind.Relative);
+                Pause.Source = new BitmapImage(resourcePauseUri);
+
+                Uri resourceStartUri = new Uri("/Resources/Images/start.png", UriKind.Relative);
+                Start.Source = new BitmapImage(resourceStartUri);
+
+                Uri resourceStopUri = new Uri("/Resources/Images/stop.png", UriKind.Relative);
+                Stop.Source = new BitmapImage(resourceStopUri);
+                #endregion
+
+                var validFailure = 80;
+                ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+            }
+            else if (type.Type200 < suddenFailure || type.Type200 < gradualFailure)
+            {
+                CheckBox.IsChecked = true;
+                #region
+                Uri resourcePauseUri = new Uri("/Resources/Images/pause_active.png", UriKind.Relative);
+                Pause.Source = new BitmapImage(resourcePauseUri);
+
+                Uri resourceStartUri = new Uri("/Resources/Images/start.png", UriKind.Relative);
+                Start.Source = new BitmapImage(resourceStartUri);
+
+                Uri resourceStopUri = new Uri("/Resources/Images/stop.png", UriKind.Relative);
+                Stop.Source = new BitmapImage(resourceStopUri);
+                #endregion
+
+                var validFailure = 200;
+                ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+            }
+        }
     }
 }

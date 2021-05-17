@@ -181,7 +181,7 @@
 
         <Label Content="Отказ!" FontWeight="Bold" FontFamily="/SSAU.vls;component/Font.SSAU/#Elektra Pro" FontSize="15" Grid.Column="3" HorizontalAlignment="Center" Margin="105,16,100,0" Grid.Row="8" VerticalAlignment="Center" Width="95" HorizontalContentAlignment="Center"/>
         <Label Grid.Column="3" HorizontalAlignment="Left" Margin="135,1,0,0" Grid.Row="9" VerticalAlignment="Top" Height="34" Width="37">
-            <CheckBox >
+            <CheckBox Name="CheckBox" Click="CheckBox_Click" >
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                 </CheckBox.LayoutTransform>
