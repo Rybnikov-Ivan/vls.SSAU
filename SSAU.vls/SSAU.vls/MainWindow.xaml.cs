@@ -2,8 +2,6 @@
 using SSAU.vls.FIRST.lr;
 using System.Windows.Input;
 using SSAU.vls.AssistingsWindows;
-using SSAU.vls.FIRST.lr.ExportToExcel;
-using SSAU.vls.AssistingsWindows.Models;
 
 namespace SSAU.vls
 {
@@ -21,8 +19,7 @@ namespace SSAU.vls
         {
             InitializeComponent();
         }
-
-        
+     
         /// <summary>
         /// Кнопка, вызывающая окно потверждения для закрытия приложения
         /// </summary>

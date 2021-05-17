@@ -1,12 +1,5 @@
 ﻿using SSAU.vls.FIRST.lr.Calculation.Models;
 using System;
-using SSAU.vls.FIRST.lr.ExportToExcel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Threading;
 using SSAU.vls.FIRST.lr.ExportToExcel.Models;
 
 namespace SSAU.vls.FIRST.lr.Calculation
@@ -21,6 +14,7 @@ namespace SSAU.vls.FIRST.lr.Calculation
         public static double k6 = 1.2;
         public static double k7 = 1.8;
         public static double k8 = 0.1;
+
         /// <summary>
         /// Расчет постепенного отказа
         /// </summary>
@@ -39,6 +33,10 @@ namespace SSAU.vls.FIRST.lr.Calculation
             return model;
         }
 
+        /// <summary>
+        /// Расчет Com модели
+        /// </summary>
+        /// <param name="model"></param>
         public static ComModel CalculationComModel(CalculationModel model)
         {
             ComModel comModel = new ComModel();
@@ -50,6 +48,11 @@ namespace SSAU.vls.FIRST.lr.Calculation
 
             return comModel;
         }
+
+        /// <summary>
+        /// Расчет типов
+        /// </summary>
+        /// <param name="model"></param>
         public static TypeModel CalculationTypes(CalculationModel model)
         {
             // Расчет типов
@@ -62,19 +65,6 @@ namespace SSAU.vls.FIRST.lr.Calculation
             typeModel.Type200 = 0.01 * k7 * k8 * 100;
 
             return typeModel;
-        }
-
-        public static FailureModel CalculationFailure(CalculationModel model, TypeModel typeModel, ComModel comModel, int count)
-        {
-            FailureModel failureModel = new FailureModel();
-            failureModel.Q15 = (1 - Math.Exp(-model.Lambda * model.Time)) * (model.Power / 1000.0) * model.K4 * model.K7 * model.K8 * 1.4;
-            failureModel.Q17 = (1 - Math.Exp(-model.Lambda * model.Time)) * (model.Power / 1000.0) * model.K5 * model.K6 * model.K7 * model.K8 * 1.0;
-            failureModel.Q30 = (1 - Math.Exp(-model.Lambda * model.Time)) * model.K7 * model.K8 * 0.3;
-            failureModel.Q50 = (1 - Math.Exp(-model.Lambda * model.Time)) * (model.Power / 1000.0) * model.K4 * model.K5 * model.K6 * model.K7 * model.K8 * 0.1;
-            failureModel.Q80 = (1 - Math.Exp(-model.Lambda * model.Time)) * (model.Power / 1000.0) * model.K4 * model.K5 * model.K6 * model.K7 * model.K8 * 0.05;
-            failureModel.Q200 = (1 - Math.Exp(-model.Lambda * model.Time)) * (model.Power / 1000.0) * model.K4 * model.K5 * model.K6 * model.K7 * model.K8 * 0.01;
-
-            return failureModel;
         }
     }
 }

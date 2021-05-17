@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SSAU.vls.FIRST.lr.Calculation.Models
+﻿namespace SSAU.vls.FIRST.lr.Calculation.Models
 {
     public class CalculationModel
     {

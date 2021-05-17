@@ -120,13 +120,16 @@
     </Compile>
     <Compile Include="AssistingsWindows\CloseWindow.xaml.cs">
       <DependentUpon>CloseWindow.xaml</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="AssistingsWindows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="AssistingsWindows\Models\ModelLoginForm.cs" />
     <Compile Include="AssistingsWindows\WarningWindow.xaml.cs">
       <DependentUpon>WarningWindow.xaml</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="FIRST.lr\Calculation\Calculation.cs" />
     <Compile Include="FIRST.lr\Calculation\Models\CalculationModel.cs" />
@@ -134,13 +137,14 @@
     <Compile Include="FIRST.lr\Calculation\Models\TypeModel.cs" />
     <Compile Include="FIRST.lr\ExportToExcel\ExportExcel.cs" />
     <Compile Include="FIRST.lr\ExportToExcel\Models\ComModel.cs" />
-    <Compile Include="FIRST.lr\ExportToExcel\Models\WorkBookExcelItem.cs" />
     <Compile Include="FIRST.lr\FirstLrWindow.xaml.cs">
       <DependentUpon>FirstLrWindow.xaml</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -161,11 +165,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Resources\Font.SSAU\ElektraText.otf" />
-    <Resource Include="Resources\Font.SSAU\ElektraTextBold.otf" />
-    <Resource Include="Resources\Font.SSAU\ElektraTextBoldItalic.otf" />
-    <Resource Include="Resources\Font.SSAU\ElektraTextItalic.otf" />
-    <Resource Include="Resources\Font.SSAU\ElektraTextLight.otf" />
+    <Resource Include="Resources\Font.SSAU\ElektraText.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Font.SSAU\ElektraTextBold.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Font.SSAU\ElektraTextBoldItalic.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Font.SSAU\ElektraTextItalic.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Font.SSAU\ElektraTextLight.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

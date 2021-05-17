@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Office.Interop.Excel;
-using SSAU.vls.AssistingsWindows.Models;
-using SSAU.vls.FIRST.lr.Calculation.Models;
 using SSAU.vls.FIRST.lr.ExportToExcel.Models;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SSAU.vls.FIRST.lr.ExportToExcel
 {

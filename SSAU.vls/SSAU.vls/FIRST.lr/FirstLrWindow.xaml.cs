@@ -1,13 +1,10 @@
 ﻿using SSAU.vls.AssistingsWindows;
 using SSAU.vls.FIRST.lr.Calculation.Models;
-using SSAU.vls.FIRST.lr.ExportToExcel;
 using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using SSAU.vls.FIRST.lr.Calculation;
-using System.Threading.Tasks;
 using SSAU.vls.FIRST.lr.ExportToExcel.Models;
 using System.Collections.Generic;
 
@@ -33,7 +30,11 @@ namespace SSAU.vls.FIRST.lr
         /// </summary>
         private int _startValue = 1;
 
+        /// <summary>
+        /// Счетчик
+        /// </summary>
         private int count = 2;
+
         /// <summary>
         /// Модель для расчета
         /// </summary>
@@ -41,7 +42,11 @@ namespace SSAU.vls.FIRST.lr
 
         public Random random;
 
+        /// <summary>
+        /// Результат отказа
+        /// </summary>
         public double result;
+
         /// <summary>
         /// Таймер
         /// </summary>
@@ -49,6 +54,7 @@ namespace SSAU.vls.FIRST.lr
 
         public double gradualFailure;
         public double suddenFailure;
+
         public FirstLrWindow()
         {
             InitializeComponent();
@@ -250,7 +256,6 @@ namespace SSAU.vls.FIRST.lr
             var calculationFailure = Calculation.Calculation.CalculationSuddenFailure(model, count);
             var calculationComModel = Calculation.Calculation.CalculationComModel(model);
             var calculationTypes = Calculation.Calculation.CalculationTypes(calculationFailure);
-            var calculationData = Calculation.Calculation.CalculationFailure(calculationFailure, calculationTypes, calculationComModel, count);
             CheckFailure(calculationTypes, calculationComModel);
 
             ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = 0, Com_3 = model.Power, Com_4 = Math.Round(calculationComModel.Com_4, 3), Com_5 = Math.Round(calculationComModel.Com_5, 3), Com_6 = Math.Round(calculationComModel.Com_6, 3), Com_7 = Math.Round(calculationComModel.Com_7, 3), Com_8 = Math.Round(calculationComModel.Com_8, 3) });
