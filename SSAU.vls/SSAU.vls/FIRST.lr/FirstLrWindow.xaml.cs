@@ -311,9 +311,6 @@ namespace SSAU.vls.FIRST.lr
             {
                 var loginWindow = new LoginWindow(ComModel.ExportList);
                 loginWindow.ShowDialog();
-
-                Window window = new MainWindow();
-                window.Show();
                 this.Close();
                 e.Handled = true;
             }
@@ -380,7 +377,9 @@ namespace SSAU.vls.FIRST.lr
                 #endregion
 
                 var validFailure = 15;
+                
                 ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+                SendToController.SendToController.Send(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
             }
             else if (type.Type17 < suddenFailure || type.Type17 < gradualFailure)
             {
@@ -398,6 +397,7 @@ namespace SSAU.vls.FIRST.lr
 
                 var validFailure = 17;
                 ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+                SendToController.SendToController.Send(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
             }
             else if (type.Type30 < suddenFailure || type.Type30 < gradualFailure)
             {
@@ -415,6 +415,7 @@ namespace SSAU.vls.FIRST.lr
 
                 var validFailure = 30;
                 ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+                SendToController.SendToController.Send(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
             }
             else if (type.Type50 < suddenFailure || type.Type50 < gradualFailure)
             {
@@ -432,6 +433,7 @@ namespace SSAU.vls.FIRST.lr
 
                 var validFailure = 50;
                 ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+                SendToController.SendToController.Send(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
             }
             else if (type.Type80 < suddenFailure || type.Type80 < gradualFailure)
             {
@@ -449,6 +451,7 @@ namespace SSAU.vls.FIRST.lr
 
                 var validFailure = 80;
                 ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+                SendToController.SendToController.Send(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
             }
             else if (type.Type200 < suddenFailure || type.Type200 < gradualFailure)
             {
@@ -466,6 +469,7 @@ namespace SSAU.vls.FIRST.lr
 
                 var validFailure = 200;
                 ComModel.ExportList.Add(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
+                SendToController.SendToController.Send(new ComModel() { Com_1 = "1 лр", Com_2 = validFailure, Com_3 = model.Power, Com_4 = Math.Round(com.Com_4, 3), Com_5 = Math.Round(com.Com_5, 3), Com_6 = Math.Round(com.Com_6), Com_7 = Math.Round(com.Com_7), Com_8 = Math.Round(com.Com_8) });
             }
         }
     }
